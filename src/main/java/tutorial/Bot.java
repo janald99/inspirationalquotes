@@ -46,12 +46,13 @@ public class Bot extends TelegramLongPollingBot {
 
         if(msg.isCommand()){
             if (msg.getText().equals("/start")) {
-                String startMessage = "Hey! I give out daily inspirational quotes when you ask for them!";
+                String startMessage = "Hey! I give out daily inspirational quotes when you ask for them! Simple type /quote.";
                 sendText(id, startMessage);
             } else if(msg.getText().equals("/help")) {
                 String helpMessage = "Available commands:\n"
                         + "/start - Start the bot\n"
                         + "/help - Show this help message\n"
+                        + "/quote - Ask for an inspirational quote\n"
                         + "/scream - Switch to screaming mode - Responses will be in Caps!\n"
                         + "/whisper - Switch to whispering mode - toggle off screaming mode";
                 sendText(id, helpMessage);
@@ -69,7 +70,11 @@ public class Bot extends TelegramLongPollingBot {
                     category = quote.get("category");
                 }
 
-                sendText(id,"\"" + quoteMessage + "\"" + '\n' + "Author: " + author);
+                String resultMessage = "\"" + quoteMessage + "\"" + '\n' + "Author: " + author;
+                if (screaming) {
+                    resultMessage = resultMessage.toUpperCase();
+                }
+                sendText(id,resultMessage);
             } else if(msg.getText().equals("/scream")) { //If the command was /scream, we switch gears
                 screaming = true;
             } else if (msg.getText().equals("/whisper")) { //Otherwise, we return to normal
